@@ -1,0 +1,528 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Análisis financiero comercial 2022</title>
+<meta name="description" content="Tablero financiero de ventas, márgenes, concentración de clientes y previsión 2023 para una comercializadora de tecnología.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230f1b2d'/%3E%3Crect x='6' y='16' width='5' height='10' fill='%232a78d6'/%3E%3Crect x='13' y='10' width='5' height='16' fill='%231baf7a'/%3E%3Crect x='20' y='5' width='5' height='21' fill='%23eb6834'/%3E%3C/svg%3E">
+<style>
+:root{
+  color-scheme:light;
+  --bg:#f2f4f7; --surface:#ffffff; --ink:#0f1b2d; --ink2:#46536a; --muted:#6a768a; --line:#dde2ea; --soft:#eaf0f8;
+  --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --s4:#eda100; --s5:#e87ba4; --grid:#e6eaf0;
+  --good:#17784d; --warn:#9a6700; --bad:#b8321f; --chip:#e8eef7;
+  --sans:"IBM Plex Sans","Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#0d1420; --surface:#151f2e; --ink:#e8edf4; --ink2:#b4bfce; --muted:#8996a9; --line:#283446; --soft:#1a2739;
+    --s1:#3987e5; --s2:#d95926; --s3:#199e70; --s4:#c98500; --s5:#d55181; --grid:#223044;
+    --good:#4cc38a; --warn:#e0a93a; --bad:#ff8a73; --chip:#1d2a3d;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0d1420; --surface:#151f2e; --ink:#e8edf4; --ink2:#b4bfce; --muted:#8996a9; --line:#283446; --soft:#1a2739;
+  --s1:#3987e5; --s2:#d95926; --s3:#199e70; --s4:#c98500; --s5:#d55181; --grid:#223044;
+  --good:#4cc38a; --warn:#e0a93a; --bad:#ff8a73; --chip:#1d2a3d;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:64px}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.55;font-variant-numeric:tabular-nums}
+a{color:var(--s1)}
+:focus-visible{outline:3px solid var(--s1);outline-offset:2px;border-radius:4px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 16px}
+/* top bar */
+.bar{position:sticky;top:0;z-index:20;background:var(--ink);color:#fff}
+.bar .wrap{display:flex;align-items:center;gap:16px;height:52px}
+.bar b{font-weight:600;white-space:nowrap;font-size:15px}
+.bar nav{display:flex;gap:2px;overflow-x:auto;flex:1;scrollbar-width:none}
+.bar nav::-webkit-scrollbar{display:none}
+.bar nav a{color:#c9d3e2;text-decoration:none;font-size:14px;padding:8px 10px;border-radius:6px;white-space:nowrap}
+.bar nav a:hover,.bar nav a[aria-current="true"]{background:#1f3050;color:#fff}
+.bar button{background:#1f3050;border:0;color:#fff;border-radius:6px;padding:6px 10px;font:inherit;font-size:13px;cursor:pointer}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .bar{background:#0a101a;border-bottom:1px solid var(--line)}}
+/* hero */
+.hero{padding:44px 0 28px}
+.hero .kick{color:var(--muted);font-size:14px;margin:0 0 10px}
+.hero h1{font-size:clamp(26px,4.2vw,42px);line-height:1.12;margin:0 0 14px;font-weight:600;letter-spacing:-.015em;max-width:30ch}
+.hero p.lead{max-width:68ch;color:var(--ink2);font-size:17px;margin:0}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);margin-top:28px;background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.kpi{padding:16px 18px;border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
+.kpi:nth-child(4n){border-right:0}
+.kpi:nth-last-child(-n+4){border-bottom:0}
+.kpi .l{font-size:13px;color:var(--muted)}
+.kpi .v{font-size:26px;font-weight:600;letter-spacing:-.01em;margin-top:2px}
+.kpi .n{font-size:12.5px;color:var(--ink2);margin-top:2px}
+@media(max-width:820px){.kpis{grid-template-columns:repeat(2,1fr)}.kpi:nth-child(4n){border-right:1px solid var(--line)}.kpi:nth-child(2n){border-right:0}.kpi:nth-last-child(-n+4){border-bottom:1px solid var(--line)}.kpi:nth-last-child(-n+2){border-bottom:0}}
+/* sections */
+section{padding:36px 0 8px}
+section>.wrap>h2{font-size:26px;margin:0 0 6px;letter-spacing:-.01em;font-weight:600}
+section>.wrap>p.sub{margin:0 0 18px;color:var(--ink2);max-width:72ch}
+.why{background:var(--soft);border-left:4px solid var(--s1);padding:12px 16px;border-radius:0 8px 8px 0;margin:0 0 20px;max-width:90ch;font-size:15px}
+.why b{display:block;margin-bottom:2px}
+.grid{display:grid;gap:16px}
+.g2{grid-template-columns:repeat(2,1fr)}
+.g3{grid-template-columns:repeat(3,1fr)}
+.gfc{grid-template-columns:1.25fr 1fr}
+.l2 td:last-child,.l2 th:last-child{text-align:left}
+@media(max-width:860px){.g2,.g3,.gfc{grid-template-columns:1fr}}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px 18px;min-width:0}
+.card h3{font-size:16px;margin:0 0 2px;font-weight:600}
+.card .cap{font-size:13px;color:var(--muted);margin:0 0 10px}
+svg.ch{width:100%;height:auto;display:block;overflow:visible}
+svg text{font-family:var(--sans);fill:var(--ink2);font-size:11.5px}
+svg .gl{stroke:var(--grid);stroke-width:1}
+svg .ax{stroke:var(--line)}
+.leg{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:13px;color:var(--ink2);margin:6px 0 0}
+.leg i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+.finds{margin:14px 0 0;padding:0;list-style:none;display:grid;gap:8px}
+.finds li{padding:10px 14px;background:var(--surface);border:1px solid var(--line);border-radius:8px;font-size:15px}
+.tag{display:inline-block;font-size:12px;font-weight:600;padding:1px 8px;border-radius:99px;margin-right:6px;background:var(--chip);color:var(--ink)}
+.tag.bad{color:var(--bad)} .tag.good{color:var(--good)} .tag.warn{color:var(--warn)}
+details{margin-top:10px;font-size:13.5px}
+summary{cursor:pointer;color:var(--s1)}
+table{border-collapse:collapse;width:100%;font-size:13.5px;margin-top:8px}
+th,td{text-align:right;padding:6px 8px;border-bottom:1px solid var(--line);white-space:nowrap}
+th:first-child,td:first-child{text-align:left}
+th{color:var(--muted);font-weight:500}
+.tw{overflow-x:auto}
+/* horizontal bars */
+.hb{display:grid;gap:7px}
+.hr{display:grid;grid-template-columns:minmax(110px,170px) 1fr auto;gap:10px;align-items:center;font-size:14px}
+.hr .nm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hr .tr{height:14px;background:var(--grid);border-radius:3px;position:relative}
+.hr .fl{position:absolute;left:0;top:0;bottom:0;border-radius:3px;background:var(--s1)}
+.hr .mk{position:absolute;top:-2px;bottom:-2px;width:2px;background:var(--ink)}
+.hr .val{font-size:13px;color:var(--ink2);min-width:150px;text-align:right}
+@media(max-width:560px){.hr{grid-template-columns:90px 1fr auto}.hr .val{min-width:0}}
+.chip{display:inline-block;font-size:12px;padding:0 7px;border-radius:99px;background:var(--chip);margin-left:6px}
+.chip.bad{color:var(--bad);font-weight:600}.chip.good{color:var(--good);font-weight:600}
+/* simulator */
+.sim{display:grid;grid-template-columns:1fr 1.2fr;gap:20px}
+@media(max-width:860px){.sim{grid-template-columns:1fr}}
+.ctl{display:grid;gap:14px}
+.ctl label{display:grid;gap:4px;font-size:14px}
+.ctl label span{display:flex;justify-content:space-between;color:var(--ink2)}
+.ctl output{font-weight:600;color:var(--ink)}
+input[type=range]{width:100%;accent-color:var(--s1)}
+select{font:inherit;padding:6px 8px;border-radius:6px;border:1px solid var(--line);background:var(--surface);color:var(--ink)}
+.res{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.res div{background:var(--soft);padding:10px 12px;border-radius:8px}
+.res small{display:block;color:var(--muted);font-size:12.5px}
+.res b{font-size:20px}
+.res .pos{color:var(--good)} .res .neg{color:var(--bad)}
+.note{font-size:13px;color:var(--muted);margin-top:10px;max-width:80ch}
+/* tooltip */
+#tip{position:fixed;z-index:50;pointer-events:none;background:var(--ink);color:var(--bg);padding:7px 10px;border-radius:6px;font-size:13px;line-height:1.35;max-width:260px;display:none;box-shadow:0 4px 14px rgba(0,0,0,.25)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) #tip{background:#e8edf4;color:#0d1420}}
+:root[data-theme="dark"] #tip{background:#e8edf4;color:#0d1420}
+footer{padding:36px 0 56px;color:var(--muted);font-size:13.5px}
+.next{background:var(--ink);color:#fff;border-radius:12px;padding:22px 24px}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .next{background:#1a2739}}
+.next h3{margin:0 0 6px;font-size:20px}
+.next p{margin:0 0 10px;color:#c9d3e2}
+.sheets{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:8px;margin:12px 0 0;padding:0;list-style:none}
+.sheets li{background:rgba(255,255,255,.08);border-radius:8px;padding:8px 12px;font-size:14px}
+.sheets li b{display:block;font-weight:600}
+.sheets li span{color:#c9d3e2;font-size:13px}
+@media(max-width:600px){.bar b{display:none}div[id^="c_"]{overflow-x:auto}svg.ch{min-width:560px}#c_scatter svg.ch,#c_fc svg.ch{min-width:720px}}
+@media print{.bar{display:none}body{background:#fff}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<header class="bar">
+  <div class="wrap">
+    <b>Análisis comercial 2022</b>
+    <nav id="nav" aria-label="Secciones">
+      <a href="#resumen">Resumen</a><a href="#tendencia">Tendencia</a><a href="#prevision">Previsión</a><a href="#mix">Productos</a><a href="#clientes">Clientes y riesgo</a><a href="#equipo">Equipo</a><a href="#simulador">Simulador</a><a href="#datos">Datos</a><a href="#siguiente">Excel</a>
+    </nav>
+    <button id="theme" type="button" aria-label="Cambiar tema claro u oscuro">Tema</button>
+  </div>
+</header>
+
+<main>
+<section id="resumen" style="padding-top:0">
+  <div class="wrap hero">
+    <p class="kick">Comercializadora de tecnología · datos del 1 de enero al 14 de diciembre de 2022 · 1.900 ventas · cifras en pesos (COP, supuesto por las ciudades)</p>
+    <h1>Vendiste $103.633 M con 15,7% de margen bruto. El margen se escapa en cuatro productos y 42,2% de las ventas depende de un solo cliente.</h1>
+    <p class="lead">Las ventas no muestran una tendencia clara: oscilan alrededor de $297 M por día. Por eso la previsión 2023 se plantea como un rango y no como una línea de crecimiento. Lo que sí se puede mejorar con los datos que hay: el margen de los productos que más pesan y la dependencia de un cliente.</p>
+
+    <div class="kpis" id="kpis"></div>
+
+    <ul class="finds">
+      <li><span class="tag bad">Margen</span>Galaxy s23 (2,4%), Intel Corei7 (5,4%), 13ultra (5,5%) y MacBook Pro (8,0%) suman $22.091 M en ventas (21,3%) pero solo 8,3% de la utilidad bruta. Llevarlos al margen del portafolio sumaría ≈ $2.109 M (+13,0% de utilidad bruta).</li>
+      <li><span class="tag bad">Riesgo</span>Asociados LTDA concentra 42,2% de las ventas. El índice HHI de clientes es 2.896 (sobre 2.500 se considera concentración alta).</li>
+      <li><span class="tag warn">Crédito</span>81,2% de las ventas es a crédito y el margen del crédito (15,6%) no es mayor que el de contado (15,9%): el riesgo y la financiación no se cobran. Sin fechas de pago no se puede medir la cartera real.</li>
+      <li><span class="tag">Previsión</span>Sin pendiente significativa (R² 5,2%, p = 0,50). Escenario base: ≈ $9.040 M por mes en 2023, con rango del 80% entre $6.410 M y $11.670 M.</li>
+      <li><span class="tag good">Palanca</span>15 Pulgadas Ip1 Athlon deja 37,7% de margen y aporta 15,3% de la utilidad con 6,4% de las ventas. Empujar su mezcla vale más que vender más de lo mismo.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="tendencia">
+  <div class="wrap">
+    <h2>Tendencia de ventas y margen</h2>
+    <p class="sub">Evolución mensual de ventas, utilidad bruta y margen, con media móvil de 3 meses.</p>
+    <div class="why"><b>Qué es y por qué importa</b>La tendencia mensual separa lo estructural de lo circunstancial. La media móvil quita el ruido de un mes atípico, y la venta por día permite comparar meses de distinta longitud y el diciembre incompleto (solo 14 días). Es la base de cualquier previsión y del presupuesto.</div>
+    <div class="grid g2">
+      <div class="card"><h3>Ventas por mes</h3><p class="cap">Millones de pesos. Diciembre es parcial (rayado).</p><div id="c_ventas"></div>
+        <div class="leg"><span><i style="background:var(--s1)"></i>Ventas</span><span><i style="background:var(--ink)"></i>Media móvil 3 meses</span></div>
+        <div id="t_ventas"></div></div>
+      <div class="card"><h3>Venta promedio por día</h3><p class="cap">Normaliza por días del mes. La línea punteada es el promedio enero–noviembre.</p><div id="c_dia"></div>
+        <div class="leg"><span><i style="background:var(--s1)"></i>Venta por día</span><span><i style="background:var(--muted)"></i>Promedio</span></div></div>
+      <div class="card"><h3>Margen bruto mensual</h3><p class="cap">Utilidad bruta ÷ ventas. Se mueve en una banda estrecha.</p><div id="c_marg"></div>
+        <div class="leg"><span><i style="background:var(--s2)"></i>Margen bruto %</span></div></div>
+      <div class="card"><h3>Utilidad bruta por mes</h3><p class="cap">Millones de pesos.</p><div id="c_ub"></div>
+        <div class="leg"><span><i style="background:var(--s3)"></i>Utilidad bruta</span></div></div>
+    </div>
+    <ul class="finds">
+      <li><span class="tag">Lectura</span>Mayo es el pico ($13.800 M, $445 M/día) y julio el valle ($5.986 M, 193 M/día): la distancia es de 2,3 veces. Con un solo año no se puede decir si es estacionalidad o un evento puntual.</li>
+      <li><span class="tag good">Estable</span>El margen mensual se mantiene entre 14,4% y 16,4%. El volumen cambia, el margen no: la rentabilidad depende del mix de productos, no de la temporada.</li>
+      <li><span class="tag warn">Dato</span>Diciembre trae solo 14 días: no es una caída. Su venta diaria ($309 M) está por encima del promedio.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="prevision">
+  <div class="wrap">
+    <h2>Previsión de ventas y utilidad (dic-2022 a jun-2023)</h2>
+    <p class="sub">Modelo de nivel con banda del 80%, porque la tendencia no es estadísticamente distinta de cero.</p>
+    <div class="why"><b>Qué es y por qué importa</b>Una previsión le dice a finanzas cuánta caja, inventario y capital de trabajo preparar. Se probó una regresión lineal y no hay pendiente significativa (R² 5,2%), así que proyectar crecimiento sería inventar. Se usa el promedio diario de enero–noviembre por los días de cada mes, con una banda del 80% (±1,28 desviaciones) como escenarios pesimista, base y optimista. Diciembre combina lo vendido hasta el 14 con los 17 días restantes proyectados.</div>
+    <div class="grid gfc">
+      <div class="card"><h3>Ventas mensuales: real y previsión</h3><p class="cap">Barras llenas: real. Rayado: proyectado. Barra fina: rango del 80%.</p><div id="c_fc"></div>
+        <div class="leg"><span><i style="background:var(--s1)"></i>Real</span><span><i style="background:repeating-linear-gradient(45deg,var(--s1) 0 2px,transparent 2px 5px);border:1px solid var(--s1)"></i>Proyectado</span><span><i style="background:var(--ink)"></i>Rango 80%</span></div></div>
+      <div class="card"><h3>Escenarios</h3><p class="cap">Millones de pesos. Utilidad bruta = ventas × 15,7%.</p><div class="tw"><table id="t_fc"></table></div>
+        <p class="note">Si 2023 repite el patrón de 2022 (mayo fue 1,5 veces el promedio diario), abril–mayo podrían superar el escenario base. Es un escenario al alza que hay que confirmar con datos de más años.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="mix">
+  <div class="wrap">
+    <h2>Mezcla de productos y rentabilidad</h2>
+    <p class="sub">Dónde se vende y dónde se gana. No siempre es el mismo lugar.</p>
+    <div class="why"><b>Qué es y por qué importa</b>La clasificación ABC (Pareto) ordena los productos por ventas acumuladas: A hasta el 80%, B hasta el 95% y C el resto. Cruzarla con el margen muestra qué productos son motores de utilidad y cuáles venden mucho sin dejar margen. Es la palanca más rápida: corregir precio o costo en pocos productos.</div>
+    <div class="grid g2">
+      <div class="card"><h3>Por tipo de producto</h3><p class="cap">Barra: ventas. La etiqueta indica el margen bruto (rojo si es menor a 9%, verde si es 20% o más).</p><div class="hb" id="hb_tipo"></div></div>
+      <div class="card"><h3>Por marca</h3><p class="cap">Lenovo aporta 28,1% de la utilidad con 15,9% de las ventas.</p><div class="hb" id="hb_marca"></div></div>
+    </div>
+    <div class="card" style="margin-top:16px"><h3>Matriz ventas vs. margen por producto</h3><p class="cap">Cada punto es un producto. Líneas: margen del portafolio y mediana de ventas. Abajo a la derecha están las fugas que más pesan.</p><div id="c_scatter"></div>
+      <div class="leg"><span><i style="background:var(--s2)"></i>Fuga: margen menor a 9%</span><span><i style="background:var(--s4)"></i>Vigilar: vende más que la mediana y gana menos que el portafolio</span><span><i style="background:var(--s3)"></i>Estrella: vende y gana por encima, o margen ≥ 22%</span><span><i style="background:var(--muted)"></i>Resto</span></div></div>
+    <div class="card" style="margin-top:16px"><h3>Los 20 productos: ventas, margen y clase ABC</h3><p class="cap">Ordenados por ventas, con su clase ABC y su margen. El color de la barra indica el nivel de margen.</p><div class="hb" id="hb_prod"></div></div>
+  </div>
+</section>
+
+<section id="clientes">
+  <div class="wrap">
+    <h2>Clientes, crédito y logística</h2>
+    <p class="sub">En la base hay 4 clientes. Cada uno tiene una sola ciudad, una sola transportadora y una sola condición de pago.</p>
+    <div class="why"><b>Qué es y por qué importa</b>Depender de pocos clientes y vender a crédito son los dos riesgos que más rápido quiebran a un comercializador. El índice HHI (suma de los cuadrados de las participaciones) mide la concentración: bajo 1.500 es diversificado, sobre 2.500 es concentrado. Aquí, como los clientes están atados a ciudad y pago, el análisis de plaza, transporte y cartera es el mismo análisis.</div>
+    <div class="grid g2">
+      <div class="card"><h3>Participación en ventas</h3><p class="cap">Barra: ventas y participación.</p><div class="hb" id="hb_cli"></div></div>
+      <div class="card"><h3>Perfil de cada cliente</h3><div class="tw"><table id="t_cli"></table></div>
+        <p class="note">Los márgenes por cliente son casi idénticos (15,2%–15,9%). No se ve prima de riesgo por crédito, ni descuento por volumen a Asociados LTDA: la política comercial parece uniforme.</p></div>
+    </div>
+    <ul class="finds">
+      <li><span class="tag bad">Riesgo</span>Si Asociados LTDA reduce sus compras a la mitad, las ventas caen ≈ 21,1% y la utilidad bruta ≈ $3.420 M.</li>
+      <li><span class="tag warn">Crédito</span>FullStark es el único cliente de contado (18,8% de las ventas). Los otros tres compran a crédito y no hay fecha de pago en la base: no se puede calcular el DSO (días de cartera) ni la mora. En el simulador puedes estimar la cartera con un plazo supuesto.</li>
+      <li><span class="tag">Ciudad</span>Bogotá pesa 42,2%; Medellín, Cali y Bucaramanga pesan entre 18,8% y 20,2% cada una. Las tres últimas son casi idénticas, algo poco habitual en datos reales.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="equipo">
+  <div class="wrap">
+    <h2>Equipo y calendario</h2>
+    <p class="sub">Ventas registradas por empleado y por día de la semana.</p>
+    <div class="why"><b>Qué es y por qué importa</b>Medir ventas y margen por persona sirve para metas, comisiones y detectar desbalances. Aquí hay una advertencia: de los 10 empleados que registran ventas, solo Juan y Lina están en el área de Ventas; el resto es de Compras, Gerencia, Almacén, etc. Antes de usar esta tabla para evaluar desempeño, conviene confirmar qué significa el campo Empleado.</div>
+    <div class="grid g2">
+      <div class="card"><h3>Ventas por empleado</h3><p class="cap">Entre paréntesis, el área.</p><div class="hb" id="hb_emp"></div></div>
+      <div class="card"><h3>Ventas por día de la semana</h3><p class="cap">Venta total del año por día.</p><div id="c_wd"></div></div>
+    </div>
+    <ul class="finds">
+      <li><span class="tag">Lectura</span>El reparto es parejo: el primero (Diego, 12,0%) vende 1,35 veces lo del último (Paola, 8,9%). No hay una dependencia de un vendedor estrella, y el margen de todos queda entre 14,7% y 16,6%.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="simulador">
+  <div class="wrap">
+    <h2>Simulador de escenarios</h2>
+    <p class="sub">Mueve precio, costo y volumen sobre la base real del periodo (1-ene a 14-dic) y mira el efecto en utilidad.</p>
+    <div class="why"><b>Qué es y por qué importa</b>Convierte el diagnóstico en decisiones: ¿cuánto vale subir 3% el precio de las fugas, aunque se pierda algo de volumen? ¿cuánto cuesta financiar la cartera? Los resultados son hipótesis sobre el pasado, no una previsión, y la elasticidad es un supuesto que debes validar con tu equipo comercial.</div>
+    <div class="card sim">
+      <div class="ctl">
+        <label><span>Aplicar a<select id="s_scope"><option value="all">Todos los productos</option><option value="leak" selected>Solo las 4 fugas (margen &lt; 9%)</option></select></span></label>
+        <label><span>Cambio de precio <output id="o_p">+3%</output></span><input id="s_p" type="range" min="-10" max="15" step="0.5" value="3"></label>
+        <label><span>Cambio de costo unitario <output id="o_c">0%</output></span><input id="s_c" type="range" min="-10" max="15" step="0.5" value="0"></label>
+        <label><span>Cambio de volumen directo <output id="o_v">0%</output></span><input id="s_v" type="range" min="-30" max="30" step="1" value="0"></label>
+        <label><span>Elasticidad: % de volumen perdido por cada +1% de precio <output id="o_e">0,8</output></span><input id="s_e" type="range" min="0" max="2" step="0.1" value="0.8"></label>
+        <label><span>Plazo de cobro supuesto (días) <output id="o_d">45</output></span><input id="s_d" type="range" min="0" max="120" step="5" value="45"></label>
+        <label><span>Costo de financiación (tasa efectiva anual) <output id="o_t">14%</output></span><input id="s_t" type="range" min="0" max="30" step="1" value="14"></label>
+      </div>
+      <div>
+        <div class="res" id="res"></div>
+        <p class="note" id="simnote"></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="datos">
+  <div class="wrap">
+    <h2>Calidad de datos y lo que falta</h2>
+    <p class="sub">Lo que se corrigió para calcular, y lo que debería sumarse para llegar a EBITDA, caja y cartera.</p>
+    <div class="why"><b>Qué es y por qué importa</b>Un análisis financiero vale lo que valen sus datos. Se limpió la base sin cambiar cifras reales, salvo una venta duplicada. Y se listan los datos ausentes que más aumentarían la calidad de las decisiones.</div>
+    <div class="grid g2">
+      <div class="card"><h3>Correcciones aplicadas</h3><div class="tw"><table class="l2">
+        <tr><th>Hallazgo</th><th>Tratamiento</th></tr>
+        <tr><td style="white-space:normal">Venta PP_1900 duplicada (una copia con el producto «Celular Donalis»)</td><td style="white-space:normal">Se eliminó la copia: −$172,6 M</td></tr>
+        <tr><td style="white-space:normal">Costo de «Xiaomi redmi 8» como texto («3.100.000»)</td><td style="white-space:normal">Convertido a número</td></tr>
+        <tr><td style="white-space:normal">«Celuar» (864), «Samsum» (192), «crédito» vs «Crédito» (366), tipo cliente «A »</td><td style="white-space:normal">Normalizados</td></tr>
+        <tr><td style="white-space:normal">Columna «Ingresos» = (precio − costo) × cantidad</td><td style="white-space:normal">Es utilidad bruta; «Ventas» = precio × cantidad. Se renombraron</td></tr>
+        <tr><td style="white-space:normal">Nombres de producto con espacios ocultos («ASPIRE 3 », «Lenovo 14IGL7 »)</td><td style="white-space:normal">Espacios eliminados</td></tr>
+        <tr><td style="white-space:normal">Diciembre solo hasta el 14</td><td style="white-space:normal">Se normaliza por días</td></tr>
+        <tr><td style="white-space:normal">Hoja «Tabla dinámica 1» vacía y lista auxiliar en U:W desalineada (Galaxy jpro ↔ Lenovo)</td><td style="white-space:normal">Ignoradas</td></tr>
+      </table></div></div>
+      <div class="card"><h3>Datos que desbloquearían más análisis</h3><div class="tw"><table class="l2">
+        <tr><th>Dato faltante</th><th>Indicador que habilita</th></tr>
+        <tr><td style="white-space:normal">Gastos operativos (nómina, fletes, arriendo)</td><td style="white-space:normal">EBITDA, margen neto, punto de equilibrio</td></tr>
+        <tr><td style="white-space:normal">Fecha de factura, vencimiento y pago</td><td style="white-space:normal">DSO, mora, cartera por edades</td></tr>
+        <tr><td style="white-space:normal">Inventario</td><td style="white-space:normal">Rotación, días de inventario, GMROI</td></tr>
+        <tr><td style="white-space:normal">Descuentos y devoluciones</td><td style="white-space:normal">Venta neta real, calidad de la venta</td></tr>
+        <tr><td style="white-space:normal">Presupuesto o metas</td><td style="white-space:normal">Cumplimiento, desviaciones</td></tr>
+        <tr><td style="white-space:normal">Más de un año de historia</td><td style="white-space:normal">Estacionalidad real, crecimiento interanual</td></tr>
+      </table></div>
+        <p class="note"><b>Alerta de costos:</b> el precio y el costo unitario de cada producto no cambian en todo el año. En 2022 la inflación en Colombia fue cercana al 13%, así que el margen puede estar sobreestimado si el costo de reposición subió. Conviene validarlo.</p></div>
+    </div>
+    <div class="card" style="margin-top:16px"><h3>Glosario de indicadores usados</h3><div class="tw"><table>
+      <tr><th>Indicador</th><th>Fórmula</th><th style="text-align:left">Para qué sirve</th></tr>
+      <tr><td>Margen bruto</td><td>Utilidad bruta ÷ ventas</td><td style="text-align:left;white-space:normal">Cuánto de cada peso vendido queda después del costo del producto</td></tr>
+      <tr><td>Markup</td><td>Utilidad bruta ÷ costo</td><td style="text-align:left;white-space:normal">Recargo sobre costo; útil para fijar precios</td></tr>
+      <tr><td>Ticket promedio</td><td>Ventas ÷ número de ventas</td><td style="text-align:left;white-space:normal">Tamaño típico de operación</td></tr>
+      <tr><td>Utilidad por unidad</td><td>Utilidad bruta ÷ unidades</td><td style="text-align:left;white-space:normal">Rentabilidad por equipo vendido</td></tr>
+      <tr><td>Crecimiento mensual</td><td>Ventas mes ÷ mes previo − 1</td><td style="text-align:left;white-space:normal">Dirección del negocio</td></tr>
+      <tr><td>Coeficiente de variación</td><td>Desv. estándar ÷ promedio</td><td style="text-align:left;white-space:normal">Volatilidad de las ventas: 23,4% mensual</td></tr>
+      <tr><td>HHI</td><td>Σ (participación %)²</td><td style="text-align:left;white-space:normal">Concentración de clientes, marcas o productos</td></tr>
+      <tr><td>Clase ABC</td><td>Ventas acumuladas 80% / 95%</td><td style="text-align:left;white-space:normal">Prioriza qué productos gestionar primero</td></tr>
+      <tr><td>Cartera estimada</td><td>Venta a crédito diaria × plazo de cobro</td><td style="text-align:left;white-space:normal">Capital inmovilizado en clientes (supuesto)</td></tr>
+    </table></div></div>
+  </div>
+</section>
+
+<section id="siguiente">
+  <div class="wrap">
+    <div class="next">
+      <h3>Siguiente entrega: el libro de Excel con fórmulas</h3>
+      <p>Cada hoja estará conectada a la base limpia con fórmulas vivas (SUMAS.SI.CONJUNTO, SI.ERROR, PRONOSTICO.LINEAL, etc.), tendrá sus gráficos nativos y un cuadro «Qué es y por qué importa» como el de esta página.</p>
+      <ul class="sheets">
+        <li><b>Léeme</b><span>Guía, supuestos y mapa de hojas</span></li>
+        <li><b>Base_Limpia</b><span>Tabla con columnas calculadas</span></li>
+        <li><b>Parámetros</b><span>Plazo de cobro, tasa, gastos, meta de margen</span></li>
+        <li><b>KPIs</b><span>Ratios e indicadores</span></li>
+        <li><b>Tendencia</b><span>Mensual, MoM, media móvil, gráficos</span></li>
+        <li><b>Previsión</b><span>Escenarios con rango del 80%</span></li>
+        <li><b>Productos_ABC</b><span>Pareto, margen, matriz</span></li>
+        <li><b>Clientes_Riesgo</b><span>HHI, crédito, cartera estimada</span></li>
+        <li><b>Equipo</b><span>Ventas y margen por persona y día</span></li>
+        <li><b>Simulador</b><span>Precio, costo, volumen</span></li>
+        <li><b>Calidad_Datos</b><span>Correcciones y datos faltantes</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer><div class="wrap">Cifras calculadas a partir de la hoja BDatos del archivo recibido, tras las correcciones descritas. Las previsiones y el simulador son escenarios, no garantías. Para publicar en Netlify basta con arrastrar este archivo (index.html) a la zona de despliegue manual.</div></footer>
+<div id="tip" role="tooltip"></div>
+
+<script>
+const D = {"T":103632777034.0,"U":16223617274.0,"C":87409159760.0,"mu":297195270.0458455,"sd":67547494.9836356,"slope":-4666152.032238515,"r2":0.05249185969942447,"pval":0.49798629998853855,"marg":0.15654909323405788,"months":[{"Mes":"2022-01","v":9738965526,"ub":1548066166,"n":180,"u":2302,"d":27,"cal":31},{"Mes":"2022-02","v":7667494170,"ub":1210083850,"n":154,"u":1846,"d":24,"cal":28},{"Mes":"2022-03","v":9139607974,"ub":1313201894,"n":162,"u":2182,"d":28,"cal":31},{"Mes":"2022-04","v":11045631654,"ub":1813784534,"n":178,"u":2480,"d":28,"cal":30},{"Mes":"2022-05","v":13800339040,"ub":2252783120,"n":236,"u":3194,"d":29,"cal":31},{"Mes":"2022-06","v":8076808966,"ub":1205619366,"n":164,"u":2016,"d":29,"cal":30},{"Mes":"2022-07","v":5985626746,"ub":943434346,"n":114,"u":1466,"d":25,"cal":31},{"Mes":"2022-08","v":7802299454,"ub":1159634974,"n":150,"u":1894,"d":29,"cal":31},{"Mes":"2022-09","v":7381244630,"ub":1198338710,"n":152,"u":1764,"d":28,"cal":30},{"Mes":"2022-10","v":8688965074,"ub":1386024914,"n":162,"u":2044,"d":29,"cal":31},{"Mes":"2022-11","v":9978997204,"ub":1524078484,"n":168,"u":2288,"d":26,"cal":30},{"Mes":"2022-12","v":4326796596,"ub":668566916,"n":80,"u":1044,"d":11,"cal":14}],"fc":[{"mes":"2022-12","dias":31,"base":9379116186.779373,"lo":7909282695.935463,"hi":10848949677.623283,"act":4326796596.0},{"mes":"2023-01","dias":31,"base":9213053371.421211,"lo":6532768770.47055,"hi":11893337972.371872,"act":0},{"mes":"2023-02","dias":28,"base":8321467561.283674,"lo":5900565341.070174,"hi":10742369781.497175,"act":0},{"mes":"2023-03","dias":31,"base":9213053371.421211,"lo":6532768770.47055,"hi":11893337972.371872,"act":0},{"mes":"2023-04","dias":30,"base":8915858101.375366,"lo":6322034294.003757,"hi":11509681908.746973,"act":0},{"mes":"2023-05","dias":31,"base":9213053371.421211,"lo":6532768770.47055,"hi":11893337972.371872,"act":0},{"mes":"2023-06","dias":30,"base":8915858101.375366,"lo":6322034294.003757,"hi":11509681908.746973,"act":0}],"prod":[{"name":"13ultra","tipo":"Celular","marca":"Xiaomi","v":4269152832,"ub":235752832,"u":1204,"n":96,"p":3545808,"c":3350000},{"name":"15 Pulgadas Ip1 Athlon","tipo":"Portátil","marca":"Lenovo","v":6585570108,"ub":2482170108,"u":1954,"n":94,"p":3370302,"c":2100000},{"name":"ASPIRE 3","tipo":"Portátil","marca":"Acer","v":4194947718,"ub":1021547718,"u":738,"n":94,"p":5684211,"c":4300000},{"name":"ASUS AIO V","tipo":"Pc Mesa","marca":"Asus","v":8806137912,"ub":865545912,"u":1782,"n":94,"p":4941716,"c":4456000},{"name":"Apple MacBook","tipo":"Portátil","marca":"Apple","v":2179613308,"ub":307813308,"u":764,"n":94,"p":2852897,"c":2450000},{"name":"Galaxy jpro","tipo":"Celular","marca":"Samsung","v":4949845104,"ub":844771344,"u":996,"n":96,"p":4969724,"c":4121560},{"name":"Galaxy s23","tipo":"Celular","marca":"Samsung","v":3192564680,"ub":75804680,"u":760,"n":96,"p":4200743,"c":4101000},{"name":"Gaming F15","tipo":"Portátil","marca":"Asus","v":8517499592,"ub":1315499592,"u":1108,"n":94,"p":7687274,"c":6500000},{"name":"INTEL CORE i3","tipo":"Pc Mesa","marca":"Intel","v":4119431000,"ub":614721000,"u":1510,"n":94,"p":2728100,"c":2321000},{"name":"Intel Corei7","tipo":"Pc Mesa","marca":"Intel","v":5161483346,"ub":281263346,"u":998,"n":94,"p":5171827,"c":4890000},{"name":"JANUS","tipo":"Pc Mesa","marca":"Janus","v":4392824184,"ub":982076184,"u":1566,"n":94,"p":2805124,"c":2178000},{"name":"Lenovo 14IGL7","tipo":"Portátil","marca":"Lenovo","v":9897540996,"ub":2071540996,"u":1204,"n":96,"p":8220549,"c":6500000},{"name":"MacBook Air","tipo":"Portátil","marca":"Apple","v":6033325368,"ub":857349368,"u":1256,"n":94,"p":4803603,"c":4121000},{"name":"MacBook Pro","tipo":"Portátil","marca":"Apple","v":9468071808,"ub":757031808,"u":1664,"n":94,"p":5689947,"c":5235000},{"name":"Vivo x80","tipo":"Celular","marca":"Vivo","v":2943200000,"ub":339600000,"u":1132,"n":96,"p":2600000,"c":2300000},{"name":"Xiaomi 13T","tipo":"Celular","marca":"Xiaomi","v":2442220000,"ub":287320000,"u":1306,"n":96,"p":1870000,"c":1650000},{"name":"Xiaomi redmi 8","tipo":"Celular","marca":"Xiaomi","v":6367914400,"ub":849914400,"u":1780,"n":96,"p":3577480,"c":3100000},{"name":"iPhone 11","tipo":"Celular","marca":"Apple","v":3335553488,"ub":534913488,"u":1094,"n":96,"p":3048952,"c":2560000},{"name":"iPhone 13 pro","tipo":"Celular","marca":"Apple","v":3074250550,"ub":481450550,"u":926,"n":96,"p":3319925,"c":2800000},{"name":"iPhone 13 pro max","tipo":"Celular","marca":"Apple","v":3701630640,"ub":1017530640,"u":778,"n":96,"p":4757880,"c":3450000}],"cli":[{"name":"Asociados LTDA","ciudad":"Bogotá","transp":"Terrestre","pago":"Crédito","tc":"A","v":43739616368,"ub":6839779488,"u":10092,"n":804},{"name":"Distribuidora Oriente","ciudad":"Cali","transp":"Terrestre","pago":"Crédito","tc":"A","v":19515358246,"ub":3103030486,"u":4690,"n":366},{"name":"FullStark","ciudad":"Bucaramanga","transp":"Aereo","pago":"Contado","tc":"B","v":19491370324,"ub":3103889364,"u":4596,"n":352},{"name":"Smart S.A.S","ciudad":"Medellín","transp":"Fluvial","pago":"Crédito","tc":"A","v":20886432096,"ub":3176917936,"u":5142,"n":378}],"emp":[{"name":"Alejandra","area":"Control de calidad","v":10746481941,"ub":1698004461,"u":2423,"n":182},{"name":"Daniela","area":"Despachos","v":9457100593,"ub":1451827593,"u":2410,"n":187},{"name":"Diego","area":"Compras","v":12468916035,"ub":1936963075,"u":2711,"n":205},{"name":"Hernan","area":"Compras","v":9927646495,"ub":1579910775,"u":2309,"n":183},{"name":"Juan","area":"Ventas","v":10240320591,"ub":1671430991,"u":2462,"n":184},{"name":"Liliana","area":"Gerencia","v":10813613563,"ub":1643451803,"u":2484,"n":197},{"name":"Lina","area":"Ventas","v":9441530676,"ub":1567326476,"u":2289,"n":182},{"name":"Martha","area":"Administracion","v":10489264790,"ub":1598975230,"u":2626,"n":211},{"name":"Matias","area":"Almacen","v":10828781147,"ub":1594483627,"u":2576,"n":201},{"name":"Paola","area":"Logística","v":9219121203,"ub":1481243243,"u":2230,"n":168}],"tipo":[{"name":"Celular","v":34276331694,"ub":4667057934,"u":9976,"n":864},{"name":"Pc Mesa","v":22479876442,"ub":2743606442,"u":5856,"n":376},{"name":"Portátil","v":46876568898,"ub":8812952898,"u":8688,"n":660}],"marca":[{"name":"Acer","v":4194947718,"ub":1021547718,"u":738,"n":94},{"name":"Apple","v":27792445162,"ub":3956089162,"u":6482,"n":570},{"name":"Asus","v":17323637504,"ub":2181045504,"u":2890,"n":188},{"name":"Intel","v":9280914346,"ub":895984346,"u":2508,"n":188},{"name":"Janus","v":4392824184,"ub":982076184,"u":1566,"n":94},{"name":"Lenovo","v":16483111104,"ub":4553711104,"u":3158,"n":190},{"name":"Samsung","v":8142409784,"ub":920576024,"u":1756,"n":192},{"name":"Vivo","v":2943200000,"ub":339600000,"u":1132,"n":96},{"name":"Xiaomi","v":13079287232,"ub":1372987232,"u":4290,"n":288}],"pago":[{"Pago":"Contado","v":19491370324,"ub":3103889364},{"Pago":"Crédito","v":84141406710,"ub":13119727910}],"wd":[{"Fecha":0,"v":13134472364,"n":254,"nd":43},{"Fecha":1,"v":14464190400,"n":248,"nd":44},{"Fecha":2,"v":17227682054,"n":300,"nd":46},{"Fecha":3,"v":15168807288,"n":270,"nd":45},{"Fecha":4,"v":15559072386,"n":288,"nd":46},{"Fecha":5,"v":13737995446,"n":274,"nd":44},{"Fecha":6,"v":14340557096,"n":266,"nd":45}],"rows":1900,"units":24520,"dias":313,"calDays":348};
+</script>
+<script>
+(function(){
+const MES=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic','Ene','Feb','Mar','Abr','May','Jun'];
+const $=s=>document.querySelector(s);
+const nf=(v,d=0)=>v.toLocaleString('es-CO',{minimumFractionDigits:d,maximumFractionDigits:d});
+const M=v=>'$'+nf(v/1e6)+' M';
+const pct=(v,d=1)=>nf(v*100,d)+'%';
+const css=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const tip=$('#tip');
+function attachTip(root){
+  root.addEventListener('pointermove',e=>{
+    const t=e.target.closest('[data-tip]');
+    if(!t){tip.style.display='none';return}
+    tip.innerHTML=t.getAttribute('data-tip');tip.style.display='block';
+    const w=tip.offsetWidth,h=tip.offsetHeight;
+    let x=e.clientX+14,y=e.clientY+14;
+    if(x+w>innerWidth-8)x=e.clientX-w-14; if(y+h>innerHeight-8)y=e.clientY-h-14;
+    tip.style.left=x+'px';tip.style.top=y+'px';
+  });
+  root.addEventListener('pointerleave',()=>tip.style.display='none');
+}
+function nice(max){const p=Math.pow(10,Math.floor(Math.log10(max)));const f=max/p;const n=f<=1?1:f<=2?2:f<=2.5?2.5:f<=5?5:10;return n*p}
+const NS='http://www.w3.org/2000/svg';
+const esc=s=>String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');
+
+/* ---------- KPIs ---------- */
+const T=D.T,U=D.U,C=D.C;
+const kp=[
+ ['Ventas',M(T),`${nf(D.rows)} ventas · ${D.dias} días con ventas`],
+ ['Utilidad bruta',M(U),'Ventas − costo del producto'],
+ ['Margen bruto',pct(U/T),'Markup sobre costo: '+pct(U/C)],
+ ['Unidades vendidas',nf(D.units),'Utilidad por unidad: $'+nf(U/D.units/1000)+' mil'],
+ ['Ticket promedio',M(T/D.rows),'Precio medio por unidad: $'+nf(T/D.units/1e6,2)+' M'],
+ ['Venta por día',M(D.mu),'Promedio enero–noviembre'],
+ ['Volatilidad mensual',pct(D.months.slice(0,11).reduce((a,m)=>a+m.v,0)>0? (()=>{const v=D.months.slice(0,11).map(m=>m.v);const mu=v.reduce((a,b)=>a+b)/11;return Math.sqrt(v.reduce((a,b)=>a+(b-mu)**2,0)/10)/mu})():0),'Desv. estándar ÷ promedio'],
+ ['Ventas a crédito',pct(D.pago.find(p=>p.Pago==='Crédito').v/T),'Margen del crédito '+pct(D.pago.find(p=>p.Pago==='Crédito').ub/D.pago.find(p=>p.Pago==='Crédito').v)],
+];
+$('#kpis').innerHTML=kp.map(k=>`<div class="kpi"><div class="l">${k[0]}</div><div class="v">${k[1]}</div><div class="n">${k[2]}</div></div>`).join('');
+
+/* ---------- columnas ---------- */
+function columns(host,o){
+  const W=o.w||640,H=o.h||280,m={l:o.yl||52,r:10,t:14,b:28};
+  const iw=W-m.l-m.r,ih=H-m.t-m.b;
+  let mx=0;o.items.forEach(it=>{const s=it.segs.reduce((a,b)=>a+b.v,0);mx=Math.max(mx,s,it.whisker?it.whisker[1]:0)});
+  (o.lines||[]).forEach(l=>l.vals.forEach(v=>{if(v!=null)mx=Math.max(mx,v)}));
+  const top=nice(mx*1.02);const y=v=>m.t+ih-(v/top)*ih;
+  const n=o.items.length,bw=iw/n,w=Math.min(34,bw*.62);
+  let s=`<svg class="ch" viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(o.aria)}"><defs><pattern id="${o.pid}" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" fill="var(--surface)"/><rect width="2.5" height="6" fill="var(--s1)"/></pattern></defs>`;
+  for(let i=0;i<=4;i++){const v=top*i/4;s+=`<line class="gl" x1="${m.l}" x2="${W-m.r}" y1="${y(v)}" y2="${y(v)}"/><text x="${m.l-6}" y="${y(v)+4}" text-anchor="end">${o.yf(v)}</text>`}
+  o.items.forEach((it,i)=>{
+    const cx=m.l+bw*i+bw/2;let acc=0;
+    it.segs.forEach(sg=>{const y0=y(acc+sg.v),h=y(acc)-y0;const fill=sg.hatch?`url(#${o.pid})`:sg.fill;
+      s+=`<rect x="${cx-w/2}" y="${y0}" width="${w}" height="${Math.max(h,0)}" rx="3" fill="${fill}" ${sg.hatch?`stroke="var(--s1)" stroke-width="1"`:''}/>`;acc+=sg.v});
+    if(it.whisker){s+=`<line x1="${cx}" x2="${cx}" y1="${y(it.whisker[0])}" y2="${y(it.whisker[1])}" stroke="var(--ink)" stroke-width="2"/><line x1="${cx-5}" x2="${cx+5}" y1="${y(it.whisker[0])}" y2="${y(it.whisker[0])}" stroke="var(--ink)" stroke-width="2"/><line x1="${cx-5}" x2="${cx+5}" y1="${y(it.whisker[1])}" y2="${y(it.whisker[1])}" stroke="var(--ink)" stroke-width="2"/>`}
+    s+=`<text x="${cx}" y="${H-10}" text-anchor="middle">${it.label}</text>`;
+    s+=`<rect x="${cx-bw/2}" y="${m.t}" width="${bw}" height="${ih}" fill="transparent" data-tip="${esc(it.tip)}"/>`;
+  });
+  (o.lines||[]).forEach(l=>{let d='',first=true;l.vals.forEach((v,i)=>{if(v==null)return;const cx=m.l+bw*i+bw/2;d+=(first?'M':'L')+cx+' '+y(v);first=false});
+    s+=`<path d="${d}" fill="none" stroke="${l.color}" stroke-width="2" ${l.dash?`stroke-dasharray="${l.dash}"`:''}/>`;
+    if(!l.noDots)l.vals.forEach((v,i)=>{if(v==null)return;s+=`<circle cx="${m.l+bw*i+bw/2}" cy="${y(v)}" r="3.5" fill="${l.color}" stroke="var(--surface)" stroke-width="2"/>`})});
+  s+=`<line class="ax" x1="${m.l}" x2="${W-m.r}" y1="${y(0)}" y2="${y(0)}"/></svg>`;
+  host.innerHTML=s;attachTip(host);
+}
+/* ---------- línea ---------- */
+function linechart(host,o){
+  const W=o.w||640,H=o.h||260,m={l:50,r:14,t:14,b:28};const iw=W-m.l-m.r,ih=H-m.t-m.b;
+  const lo=o.min,hi=o.max;const y=v=>m.t+ih-((v-lo)/(hi-lo))*ih;const n=o.vals.length;const bw=iw/n;
+  let s=`<svg class="ch" viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(o.aria)}">`;
+  for(let i=0;i<=4;i++){const v=lo+(hi-lo)*i/4;s+=`<line class="gl" x1="${m.l}" x2="${W-m.r}" y1="${y(v)}" y2="${y(v)}"/><text x="${m.l-6}" y="${y(v)+4}" text-anchor="end">${o.yf(v)}</text>`}
+  if(o.ref!=null)s+=`<line x1="${m.l}" x2="${W-m.r}" y1="${y(o.ref)}" y2="${y(o.ref)}" stroke="var(--muted)" stroke-dasharray="5 4" stroke-width="1.5"/><text x="${W-m.r}" y="${y(o.ref)+14}" text-anchor="end">${o.refLabel}</text>`;
+  let d='';o.vals.forEach((v,i)=>{d+=(i?'L':'M')+(m.l+bw*i+bw/2)+' '+y(v)});
+  s+=`<path d="${d}" fill="none" stroke="${o.color}" stroke-width="2.2"/>`;
+  o.vals.forEach((v,i)=>{const cx=m.l+bw*i+bw/2;s+=`<circle cx="${cx}" cy="${y(v)}" r="4" fill="${o.color}" stroke="var(--surface)" stroke-width="2"/><text x="${cx}" y="${H-10}" text-anchor="middle">${o.labels[i]}</text><rect x="${cx-bw/2}" y="${m.t}" width="${bw}" height="${ih}" fill="transparent" data-tip="${esc(o.tips[i])}"/>`});
+  s+='</svg>';host.innerHTML=s;attachTip(host);
+}
+const mo=D.months;
+const lbl=mo.map((m,i)=>MES[i]+(i==11?'*':''));
+const ma3=mo.map((m,i)=>i<2?null:(mo[i].v+mo[i-1].v+mo[i-2].v)/3);
+columns($('#c_ventas'),{pid:'h1',aria:'Ventas mensuales con media móvil',yf:v=>nf(v/1e6),
+  items:mo.map((m,i)=>({label:lbl[i],segs:[{v:m.v,fill:'var(--s1)',hatch:i==11}],tip:`<b>${MES[i]} 2022</b><br>Ventas ${M(m.v)}<br>Utilidad ${M(m.ub)}<br>${m.n} ventas · ${m.cal} días${i==11?' (parcial)':''}${i>0?`<br>Cambio vs mes previo ${i==11?'n/a (parcial)':pct(m.v/mo[i-1].v-1)}`:''}`})),
+  lines:[{vals:ma3.map((v,i)=>i==11?null:v),color:'var(--ink)',noDots:true}]});
+const vday=mo.map(m=>m.v/m.cal);
+linechart($('#c_dia'),{aria:'Venta por día',color:'var(--s1)',labels:lbl,vals:vday,min:150e6,max:450e6,yf:v=>nf(v/1e6),ref:D.mu,refLabel:'Promedio '+M(D.mu),
+  tips:mo.map((m,i)=>`<b>${MES[i]}</b><br>${M(vday[i])} por día<br>${pct(vday[i]/D.mu-1)} vs promedio`)});
+const mg=mo.map(m=>m.ub/m.v);
+linechart($('#c_marg'),{aria:'Margen bruto mensual',color:'var(--s2)',labels:lbl,vals:mg,min:.12,max:.18,yf:v=>pct(v,0),ref:U/T,refLabel:'Año '+pct(U/T),
+  tips:mo.map((m,i)=>`<b>${MES[i]}</b><br>Margen ${pct(mg[i],2)}`)});
+columns($('#c_ub'),{pid:'h2',aria:'Utilidad bruta mensual',yf:v=>nf(v/1e6),
+  items:mo.map((m,i)=>({label:lbl[i],segs:[{v:m.ub,fill:'var(--s3)',hatch:false}],tip:`<b>${MES[i]}</b><br>Utilidad ${M(m.ub)}<br>Margen ${pct(mg[i],2)}`}))});
+$('#t_ventas').innerHTML=`<details><summary>Ver tabla</summary><div class="tw"><table><tr><th>Mes</th><th>Ventas</th><th>Utilidad</th><th>Margen</th><th>Cambio</th></tr>${mo.map((m,i)=>`<tr><td>${MES[i]}${i==11?' (parcial)':''}</td><td>${M(m.v)}</td><td>${M(m.ub)}</td><td>${pct(mg[i])}</td><td>${i&&i<11?pct(m.v/mo[i-1].v-1):'—'}</td></tr>`).join('')}</table></div></details>`;
+
+/* ---------- previsión ---------- */
+const fc=D.fc;
+const fitems=[];
+mo.slice(0,11).forEach((m,i)=>fitems.push({label:MES[i]+(i==0?' 22':''),segs:[{v:m.v,fill:'var(--s1)'}],tip:`<b>${MES[i]} 2022 (real)</b><br>${M(m.v)}`}));
+fc.forEach((f,i)=>{const mi=11+i;const lab=(f.mes.slice(5)*1)-1;
+  const segs=i==0?[{v:f.act,fill:'var(--s1)'},{v:f.base-f.act,hatch:true}]:[{v:f.base,hatch:true}];
+  fitems.push({label:MES[lab]+(i==1?' 23':''),segs,whisker:[f.lo,f.hi],tip:`<b>${MES[lab]} ${f.mes.slice(0,4)} (previsión)</b><br>Base ${M(f.base)}<br>Rango 80%: ${M(f.lo)} – ${M(f.hi)}<br>Utilidad base ${M(f.base*D.marg)}`})});
+columns($('#c_fc'),{pid:'h3',w:760,h:300,aria:'Ventas reales y previsión',yf:v=>nf(v/1e6),items:fitems});
+$('#t_fc').innerHTML=`<tr><th>Mes</th><th>Pesimista</th><th>Base</th><th>Optimista</th><th>Utilidad</th></tr>`+fc.map(f=>{const lab=(f.mes.slice(5)*1)-1;return `<tr><td>${MES[lab]} ${f.mes.slice(2,4)}</td><td>${nf(f.lo/1e6)}</td><td><b>${nf(f.base/1e6)}</b></td><td>${nf(f.hi/1e6)}</td><td>${nf(f.base*D.marg/1e6)}</td></tr>`}).join('')+
+ `<tr><td><b>Ene–Jun 23</b></td><td>${nf(fc.slice(1).reduce((a,f)=>a+f.lo,0)/1e6)}</td><td><b>${nf(fc.slice(1).reduce((a,f)=>a+f.base,0)/1e6)}</b></td><td>${nf(fc.slice(1).reduce((a,f)=>a+f.hi,0)/1e6)}</td><td>${nf(fc.slice(1).reduce((a,f)=>a+f.base,0)*D.marg/1e6)}</td></tr>`;
+
+/* ---------- barras horizontales ---------- */
+function hbars(host,rows,max,mark,fmt){
+  host.innerHTML=rows.map(r=>`<div class="hr" data-tip="${esc(r.tip||'')}"><div class="nm" title="${esc(r.name)}">${r.name}</div><div class="tr"><div class="fl" style="width:${r.v/max*100}%;${r.color?`background:${r.color}`:''}"></div>${mark!=null?`<div class="mk" style="left:${mark(r)*100}%"></div>`:''}</div><div class="val">${fmt(r)}</div></div>`).join('');
+  attachTip(host);
+}
+const share=r=>pct(r.v/T);
+const rowTip=r=>`<b>${r.name}</b><br>Ventas ${M(r.v)} (${pct(r.v/T)})<br>Utilidad ${M(r.ub)}<br>Margen ${pct(r.ub/r.v)}<br>Unidades ${nf(r.u)}`;
+const marg=D.marg;
+function mgchip(r){const g=r.ub/r.v;return `<span class="chip ${g<.09?'bad':g>.2?'good':''}">${pct(g)}</span>`}
+function hb(id,arr,mx){const rows=[...arr].sort((a,b)=>b.v-a.v).map(r=>({...r,tip:rowTip(r)}));hbars($(id),rows,mx||rows[0].v,null,r=>`${M(r.v)} ${mgchip(r)}`)}
+hb('#hb_tipo',D.tipo);hb('#hb_marca',D.marca);
+/* margen mark as % of bar: show portfolio margin line on a margin scale instead */
+(function(){ // add a thin portfolio margin note via chip color (done)
+})();
+// productos con ABC
+const prods=[...D.prod].sort((a,b)=>b.v-a.v);let cum=0;prods.forEach(p=>{cum+=p.v;p.cum=cum/T;p.abc=(cum-p.v)/T<0.8?'A':(cum-p.v)/T<0.95?'B':'C';p.mg=p.ub/p.v});
+hbars($('#hb_prod'),prods.map(p=>({...p,name:`${p.name}`,color:p.mg<.09?'var(--s2)':p.mg>=.2?'var(--s3)':'var(--s1)',tip:rowTip(p)+`<br>Clase ${p.abc} · acumulado ${pct(p.cum)}`})),prods[0].v,null,r=>`${M(r.v)} · ${r.abc} ${mgchip(r)}`);
+// leyenda de colores de productos
+$('#hb_prod').insertAdjacentHTML('beforebegin',`<div class="leg" style="margin:0 0 10px"><span><i style="background:var(--s2)"></i>Margen &lt; 9%</span><span><i style="background:var(--s1)"></i>9%–20%</span><span><i style="background:var(--s3)"></i>≥ 20%</span></div>`);
+
+/* ---------- scatter ---------- */
+(function(){
+  const W=860,H=380,m={l:56,r:20,t:16,b:40},iw=W-m.l-m.r,ih=H-m.t-m.b;
+  const xs=prods.map(p=>p.v),med=[...xs].sort((a,b)=>a-b)[10-1]/2+[...xs].sort((a,b)=>a-b)[10]/2;
+  const xmax=nice(Math.max(...xs)*1.05),ymax=.4;
+  const x=v=>m.l+v/xmax*iw,y=v=>m.t+ih-v/ymax*ih;
+  let s=`<svg class="ch" viewBox="0 0 ${W} ${H}" role="img" aria-label="Matriz ventas contra margen por producto">`;
+  for(let i=0;i<=4;i++){const v=ymax*i/4;s+=`<line class="gl" x1="${m.l}" x2="${W-m.r}" y1="${y(v)}" y2="${y(v)}"/><text x="${m.l-6}" y="${y(v)+4}" text-anchor="end">${pct(v,0)}</text>`}
+  for(let i=0;i<=5;i++){const v=xmax*i/5;s+=`<text x="${x(v)}" y="${H-20}" text-anchor="middle">${nf(v/1e6)}</text>`}
+  s+=`<text x="${m.l+iw/2}" y="${H-4}" text-anchor="middle">Ventas del año (millones de pesos)</text>`;
+  s+=`<line x1="${m.l}" x2="${W-m.r}" y1="${y(marg)}" y2="${y(marg)}" stroke="var(--muted)" stroke-dasharray="5 4"/><text x="${W-m.r}" y="${y(marg)-5}" text-anchor="end">Margen portafolio ${pct(marg)}</text>`;
+  s+=`<line x1="${x(med)}" x2="${x(med)}" y1="${m.t}" y2="${m.t+ih}" stroke="var(--muted)" stroke-dasharray="5 4"/><text x="${x(med)+4}" y="${m.t+10}">Mediana de ventas</text>`;
+  const lab={'Galaxy s23':'start','Intel Corei7':'start','13ultra':'end','MacBook Pro':'start','ASUS AIO V':'end','15 Pulgadas Ip1 Athlon':'start','iPhone 13 pro max':'start','Lenovo 14IGL7':'end','ASPIRE 3':'start','Gaming F15':'end'};
+  prods.forEach(p=>{const fuga=p.mg<.09,vig=!fuga&&p.v>=med&&p.mg<marg,est=(p.v>=med&&p.mg>=marg)||p.mg>=.22;const c=fuga?'var(--s2)':vig?'var(--s4)':est?'var(--s3)':'var(--muted)';
+    s+=`<circle cx="${x(p.v)}" cy="${y(p.mg)}" r="7" fill="${c}" stroke="var(--surface)" stroke-width="2" data-tip="${esc(rowTip(p)+'<br>Clase '+p.abc)}"/>`;
+    if(lab[p.name]){const a=lab[p.name];s+=`<text x="${x(p.v)+(a=='start'?11:-11)}" y="${y(p.mg)+4}" text-anchor="${a}" style="fill:var(--ink)">${p.name}</text>`}});
+  s+='</svg>';$('#c_scatter').innerHTML=s;attachTip($('#c_scatter'));
+})();
+
+/* ---------- clientes ---------- */
+const cli=[...D.cli].sort((a,b)=>b.v-a.v);
+hbars($('#hb_cli'),cli.map(c=>({...c,name:`${c.name}`,tip:rowTip(c)+`<br>${c.ciudad} · ${c.pago} · ${c.transp}`})),cli[0].v,null,r=>`${M(r.v)} · ${share(r)}`);
+const hhi=cli.reduce((a,c)=>a+(c.v/T*100)**2,0);
+$('#t_cli').innerHTML=`<tr><th>Cliente</th><th>Ciudad</th><th>Pago</th><th>Transporte</th><th>Margen</th></tr>`+cli.map(c=>`<tr><td>${c.name}</td><td>${c.ciudad}</td><td>${c.pago}</td><td>${c.transp}</td><td>${pct(c.ub/c.v)}</td></tr>`).join('')+`<tr><td colspan="5" style="text-align:left;color:var(--muted)">HHI de clientes: ${nf(hhi)} · Productos: ${nf(prods.reduce((a,p)=>a+(p.v/T*100)**2,0))} · Marcas: ${nf(D.marca.reduce((a,p)=>a+(p.v/T*100)**2,0))}</td></tr>`;
+
+/* ---------- equipo ---------- */
+const emp=[...D.emp].sort((a,b)=>b.v-a.v);
+hbars($('#hb_emp'),emp.map(e=>({...e,name:`${e.name} (${e.area})`,tip:rowTip(e)})),emp[0].v,null,r=>`${M(r.v)} ${mgchip(r)}`);
+const DN=['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'];
+columns($('#c_wd'),{pid:'h4',h:240,aria:'Ventas por día de la semana',yf:v=>nf(v/1e6),yl:56,
+  items:D.wd.map(w=>({label:DN[w.Fecha],segs:[{v:w.v,fill:'var(--s1)'}],tip:`<b>${DN[w.Fecha]}</b><br>${M(w.v)}<br>${w.n} ventas · ${w.nd} días con ventas`}))});
+
+/* ---------- simulador ---------- */
+const base=D.prod;
+function sim(){
+  const sc=$('#s_scope').value,dp=+$('#s_p').value/100,dc=+$('#s_c').value/100,dv=+$('#s_v').value/100,el=+$('#s_e').value,dso=+$('#s_d').value,tasa=+$('#s_t').value/100;
+  $('#o_p').textContent=(dp>=0?'+':'')+nf(dp*100,1)+'%';$('#o_c').textContent=(dc>=0?'+':'')+nf(dc*100,1)+'%';$('#o_v').textContent=(dv>=0?'+':'')+nf(dv*100,0)+'%';$('#o_e').textContent=nf(el,1);$('#o_d').textContent=dso;$('#o_t').textContent=nf(tasa*100,0)+'%';
+  const leak=['Galaxy s23','Intel Corei7','13ultra','MacBook Pro'];
+  let V=0,UB=0,CG=0,Uu=0;
+  base.forEach(p=>{const sel=sc=='all'||(sc=='leak'&&leak.includes(p.name));
+    const pp=sel?p.p*(1+dp):p.p,cc=sel?p.c*(1+dc):p.c,q=sel?p.u*Math.max(0,1+dv-el*dp):p.u;
+    V+=pp*q;CG+=cc*q;Uu+=q});
+  UB=V-CG;
+  const dUB=UB-U,dV=V-T;
+  const credShare=D.pago.find(p=>p.Pago==='Crédito').v/T;
+  const cartera=V*credShare/D.calDays*dso,fin=cartera*tasa;
+  const f=(l,v,cls)=>`<div><small>${l}</small><b class="${cls||''}">${v}</b></div>`;
+  $('#res').innerHTML=f('Ventas',M(V)+` (${dV>=0?'+':''}${nf(dV/T*100,1)}%)`,dV>=0?'pos':'neg')+f('Utilidad bruta',M(UB)+` (${dUB>=0?'+':''}${nf(dUB/U*100,1)}%)`,dUB>=0?'pos':'neg')+f('Margen bruto',pct(UB/V,2)+` vs ${pct(marg,2)}`)+f('Cambio en utilidad',(dUB>=0?'+':'')+M(dUB),dUB>=0?'pos':'neg')+f('Cartera estimada',M(cartera))+f('Costo anual de financiar la cartera',M(fin)+` (${pct(fin/UB,1)} de la utilidad)`);
+  $('#simnote').textContent=`Base: periodo observado (${D.calDays} días). Cartera = ventas a crédito (${pct(credShare)} de las ventas) ÷ ${D.calDays} días × plazo supuesto. El costo de financiación es una referencia anualizada, no un dato de la base.`;
+}
+['s_scope','s_p','s_c','s_v','s_e','s_d','s_t'].forEach(i=>$('#'+i).addEventListener('input',sim));sim();
+
+/* ---------- navegación y tema ---------- */
+const links=[...document.querySelectorAll('#nav a')];
+const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){links.forEach(l=>l.removeAttribute('aria-current'));const l=links.find(a=>a.getAttribute('href')=='#'+e.target.id);if(l)l.setAttribute('aria-current','true')}})},{rootMargin:'-20% 0px -70% 0px'});
+document.querySelectorAll('main section').forEach(s=>io.observe(s));
+$('#theme').addEventListener('click',()=>{const r=document.documentElement;const dark=r.dataset.theme?r.dataset.theme=='dark':matchMedia('(prefers-color-scheme:dark)').matches;r.dataset.theme=dark?'light':'dark'});
+})();
+</script>
+</body>
+</html>
